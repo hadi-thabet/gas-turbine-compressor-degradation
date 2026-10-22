@@ -40,18 +40,22 @@ def identical_columns(df, columns=FEATURES, atol=1e-9):
 def within_lp_correlation(df, target):
     """Correlate each sensor with ``target`` separately at each lever position.
 
+    A sensor that is constant within a lever position has no defined
+    correlation there; it is reported as NaN rather than raising a warning.
+
     Args:
         df: DataFrame from ``load_data``.
         target: ``"kMc"`` or ``"kMt"``.
 
     Returns:
         pandas.DataFrame: Rows are sensors, columns are lever positions,
-        values are Pearson correlations.
+        values are Pearson correlations (NaN where undefined).
     """
-    groups = df.groupby(df["lp"].round(3))
-    return pd.DataFrame({lp: g[SENSORS].corrwith(g[target])
-                         for lp, g in groups})
-
+    cols = {}
+    for lp, g in df.groupby(df["lp"].round(3)):
+        varying = [s for s in SENSORS if g[s].nunique() > 1]
+        cols[lp] = g[varying].corrwith(g[target]).reindex(SENSORS)
+    return pd.DataFrame(cols)
 
 def compare_correlations(df):
     """Tabulate pooled versus within-lever-position correlation strength.
@@ -68,6 +72,7 @@ def compare_correlations(df):
     for t in ("kMc", "kMt"):
         out[f"pooled_{t}"] = df[SENSORS].corrwith(df[t]).abs()
         out[f"within_lp_{t}"] = within_lp_correlation(df, t).abs().mean(axis=1)
+    out["n_lp"] = within_lp_correlation(df, "kMc").notna().sum(axis=1)
     return out.sort_values("within_lp_kMc", ascending=False)
 
 
@@ -98,10 +103,27 @@ def plot_signal(df, sensor="T2", out="results/figures/signal_vs_noise.png"):
     fig.savefig(out, dpi=150)
     plt.close(fig)
 
+def constant_within_lp(df):
+    """List (lever position, sensor) pairs where a sensor never varies.
+
+    Args:
+        df: DataFrame from ``load_data``.
+
+    Returns:
+        list[tuple]: ``(lp, sensor)`` pairs with zero variance, for which a
+        correlation is undefined.
+    """
+    bad = []
+    for lp, g in df.groupby(df["lp"].round(3)):
+        for s in SENSORS:
+            if g[s].nunique() == 1:
+                bad.append((lp, s))
+    return bad
 
 if __name__ == "__main__":
     data = load_data()
     print("Identical columns:", identical_columns(data))
+    print("Constant within a lever position:", constant_within_lp(data))
     print("\nDistinct v values at each lp (1 means a one-to-one mapping):")
     print(data.groupby(data["lp"].round(3))["v"].nunique().to_string())
     print("\nMean |correlation| with targets, pooled vs within lever position:")
