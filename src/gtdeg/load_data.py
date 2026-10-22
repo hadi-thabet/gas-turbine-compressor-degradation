@@ -9,6 +9,15 @@ FEATURES = ["lp", "v", "GTT", "GTn", "GGn", "Ts", "Tp", "T48", "T1", "T2",
 TARGETS = ["kMc", "kMt"]
 COLUMNS = FEATURES + TARGETS
 
+# Columns excluded from the model inputs, with the reason for each.
+DROPPED = {
+    "T1": "constant (288) - carries no information",
+    "P1": "constant (0.998) - carries no information",
+    "Tp": "identical to Ts",
+    "v": "one-to-one with lp",
+}
+MODEL_FEATURES = [c for c in FEATURES if c not in DROPPED]
+
 
 def load_data(path="data/raw/UCI CBM Dataset/data.txt"):
     """Read the dataset and check that it has the expected structure.
@@ -37,7 +46,16 @@ def load_data(path="data/raw/UCI CBM Dataset/data.txt"):
         raise ValueError("Dataset contains missing values")
     return df
 
+def select_features(df):
+    """Return the model inputs: the feature columns minus redundant ones.
 
+    Args:
+        df: DataFrame from ``load_data``.
+
+    Returns:
+        pandas.DataFrame: A copy containing only ``MODEL_FEATURES``.
+    """
+    return df[MODEL_FEATURES].copy()
 def grid_report(df, decimals=3):
     """Check whether the rows form a complete grid of the three settings.
 
