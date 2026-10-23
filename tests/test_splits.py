@@ -80,3 +80,31 @@ def test_real_data_split_sizes():
     check_split(df, sp)
     assert len(kmc_levels(df)) == 51
     assert (len(sp["train"]), len(sp["val"]), len(sp["test"])) == (7254, 2340, 2340)
+
+
+
+def test_block_split_blocks_are_contiguous_and_separate():
+    """Held-out kMc levels form contiguous blocks that share nothing."""
+    from splits import block_split
+    df = toy_grid()  # 11 levels, 6 rows per level
+    sp = block_split(df, test_block=(3, 5), val_block=(7, 9))
+    check_split(df, sp)
+    k = df["kMc"].round(3).to_numpy()
+    levels = kmc_levels(df)
+    assert set(k[sp["test"]]) == set(levels[3:5])
+    assert set(k[sp["val"]]) == set(levels[7:9])
+    assert shared_kmc_levels(df, sp, "train", "test") == 0
+    assert shared_kmc_levels(df, sp, "train", "val") == 0
+    assert (len(sp["train"]), len(sp["val"]), len(sp["test"])) == (42, 12, 12)
+    with pytest.raises(ValueError):
+        block_split(df, test_block=(3, 6), val_block=(5, 8))
+
+
+@pytest.mark.skipif(not DATA.exists(), reason="dataset not downloaded")
+def test_real_data_block_split_sizes():
+    """The block split on the real data has the same sizes as the others."""
+    from splits import block_split
+    df = load_data(DATA)
+    sp = block_split(df)
+    check_split(df, sp)
+    assert (len(sp["train"]), len(sp["val"]), len(sp["test"])) == (7254, 2340, 2340)

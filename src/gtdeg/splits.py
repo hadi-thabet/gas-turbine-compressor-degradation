@@ -135,3 +135,35 @@ def nearest_train_distance(X, split, part="test"):
     tree = cKDTree((train - mean) / std)
     dist, _ = tree.query((X[split[part]] - mean) / std)
     return dist
+
+
+
+def block_split(df, test_block=(20, 30), val_block=(40, 50)):
+    """Hold out contiguous blocks of kMc levels for test and validation.
+
+    kMc levels are numbered 0, 1, 2, ... in increasing order. Levels in
+    ``range(*test_block)`` go to test and levels in ``range(*val_block)``
+    to validation. The rest go to training. Unlike ``grouped_split``,
+    held-out rows have no training neighbours inside their block, so the
+    model must interpolate across a gap.
+
+    Args:
+        df: DataFrame with a ``kMc`` column.
+        test_block: ``(start, stop)`` level indices for test (stop excluded).
+        val_block: ``(start, stop)`` level indices for validation.
+
+    Returns:
+        dict: Positional row indices under ``train``, ``val`` and ``test``.
+
+    Raises:
+        ValueError: If the two blocks overlap.
+    """
+    if test_block[0] < val_block[1] and val_block[0] < test_block[1]:
+        raise ValueError("test_block and val_block overlap")
+    levels = kmc_levels(df)
+    index = np.searchsorted(levels, df["kMc"].round(DECIMALS).to_numpy())
+    in_test = (index >= test_block[0]) & (index < test_block[1])
+    in_val = (index >= val_block[0]) & (index < val_block[1])
+    return {"train": np.flatnonzero(~in_test & ~in_val),
+            "val": np.flatnonzero(in_val),
+            "test": np.flatnonzero(in_test)}
