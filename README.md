@@ -45,7 +45,14 @@ Coraddu, A., Oneto, L., Ghio, A., Savio, S., Anguita, D., & Figari, M. (2014).
 Condition Based Maintenance of Naval Propulsion Plants [Dataset].
 UCI Machine Learning Repository. https://doi.org/10.24432/C5K31K
 
-Licence: CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/)
+The dataset's own README asks that publications using it cite:
+A. Coraddu, L. Oneto, A. Ghio, S. Savio, D. Anguita, M. Figari,
+"Machine Learning Approaches for Improving Condition-Based Maintenance of
+Naval Propulsion Plants", Journal of Engineering for the Maritime Environment,
+2014, DOI: 10.1177/1475090214540874.
+
+Licence: the UCI page states CC BY 4.0. The README inside the zip also states
+that commercial use is prohibited. This project is non-commercial coursework.
 
 The data is not included in this repository. Download the zip from
 https://archive.ics.uci.edu/dataset/316/condition+based+maintenance+of+naval+propulsion+plants

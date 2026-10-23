@@ -48,3 +48,19 @@ These are checked by tests in `tests/test\_load\_data.py`.
 
 \- Across all lever positions together, no sensor has a correlation above 0.05 with `kMc`. Within a single lever position, correlations reach about 0.87 (`GGn`). Operating-point variation dominates the pooled readings. These are linear, absolute, averaged correlations, so they suggest which sensors matter and do not prove it.
 
+
+
+\## Dataset documentation (README.txt inside the zip)
+
+\- Noise: the README does not mention measurement noise, so I cannot say whether noise was added to the simulated sensor values.
+
+\- Generation: simulator of a frigate gas-turbine plant (propeller, hull, gas turbine, gearbox and controller blocks), steady-state measurements, uniform grid of spacing 0.001 over kMc in \[0.95, 1] and kMt in \[0.975, 1], speeds from 3 to 27 knots in steps of 3 (the file says "tree knots", a typo).
+
+\- Units: the README lists the same units as Features.txt (temperatures in C, torques in kN), so the temperature and torque concerns above are not resolved by the authors' documentation.
+
+\- Documentation errors: the README header names a different dataset (Human Activity Recognition Using Smartphones) and has typos. This makes a label error plausible but does not prove one.
+
+\- Licence: the UCI page states CC BY 4.0. The README in the zip requires citing the Coraddu et al. paper and prohibits commercial use. Citing both and keeping use non-commercial satisfies both.
+
+\- Features are not normalised (README), so scaling is done inside the models.
+
