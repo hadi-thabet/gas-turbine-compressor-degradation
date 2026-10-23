@@ -59,7 +59,19 @@ https://archive.ics.uci.edu/dataset/316/condition+based+maintenance+of+naval+pro
 and extract it into `data/raw/`, so that `data/raw/UCI CBM Dataset/data.txt` exists.
 
 ## Usage
-(To be completed.)
+Run every command from the repository root with the virtual environment active. The dataset must be downloaded first (see the Data section).
+
+    python src/gtdeg/load_data.py              # check and summarise the dataset
+    python src/gtdeg/explore.py                # correlation exploration, saves a figure
+    python src/gtdeg/run_baseline.py           # mean-prediction baseline (random and grouped splits)
+    python src/gtdeg/run_models.py             # linear, tree and SVR on three splits, writes results/model_comparison.csv
+    python src/gtdeg/experiments.py tuning     # extended SVR grid, writes results/tuning.csv (slow, about 12 minutes)
+    python src/gtdeg/experiments.py ablation   # sensor ablation, writes results/ablation.csv
+    python src/gtdeg/experiments.py noise      # input-noise robustness, writes results/noise.csv and a figure
+    python src/gtdeg/experiments.py scaling    # training-size study, writes results/scaling.csv and a figure
+    python src/gtdeg/experiments.py profile    # timing, FLOP estimates and profiler output, writes results/profile.csv
+
+Figures are written to `results/figures/`. The tuning time is the sum of the fit times from my run, so it will vary with your computer.
 
 ## Testing
     pytest
