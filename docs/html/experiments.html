@@ -246,11 +246,11 @@ rows are not used here.</p>
 </span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a><span class="w">    </span><span class="sd">"""Estimate the arithmetic needed to predict ``n_rows`` rows.</span>
 </span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a>
 </span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a><span class="sd">    Assumptions: linear = one multiply-add per coefficient (2 per feature);</span>
-</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a><span class="sd">    SVR = for each support vector, 3d - 1 operations for the squared</span>
-</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a><span class="sd">    distance plus 3 more (scale, exp counted as one, multiply by the dual</span>
-</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a><span class="sd">    coefficient) and 1 to accumulate, giving 3d + 2; tree = one comparison</span>
-</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a><span class="sd">    per level (comparisons, not floating-point operations). Input</span>
-</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a><span class="sd">    standardisation is not counted.</span>
+</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a><span class="sd">    SVR = for each support vector, about 3d + 2 operations: 3d - 1 for the</span>
+</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a><span class="sd">    squared distance plus about 3 for scaling by gamma, the exponential</span>
+</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a><span class="sd">    (counted as one operation) and the weighted accumulation; tree = one</span>
+</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a><span class="sd">    comparison per level (comparisons, not floating-point operations).</span>
+</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a><span class="sd">    Input standardisation is not counted.</span>
 </span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>
 </span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a><span class="sd">    Args:</span>
 </span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a><span class="sd">        name: ``"linear"``, ``"tree"`` or ``"svr"``.</span>
@@ -792,11 +792,11 @@ rows are not used here.</p>
 </span><span id="flop_estimate-118"><a href="#flop_estimate-118"><span class="linenos">118</span></a><span class="w">    </span><span class="sd">"""Estimate the arithmetic needed to predict ``n_rows`` rows.</span>
 </span><span id="flop_estimate-119"><a href="#flop_estimate-119"><span class="linenos">119</span></a>
 </span><span id="flop_estimate-120"><a href="#flop_estimate-120"><span class="linenos">120</span></a><span class="sd">    Assumptions: linear = one multiply-add per coefficient (2 per feature);</span>
-</span><span id="flop_estimate-121"><a href="#flop_estimate-121"><span class="linenos">121</span></a><span class="sd">    SVR = for each support vector, 3d - 1 operations for the squared</span>
-</span><span id="flop_estimate-122"><a href="#flop_estimate-122"><span class="linenos">122</span></a><span class="sd">    distance plus 3 more (scale, exp counted as one, multiply by the dual</span>
-</span><span id="flop_estimate-123"><a href="#flop_estimate-123"><span class="linenos">123</span></a><span class="sd">    coefficient) and 1 to accumulate, giving 3d + 2; tree = one comparison</span>
-</span><span id="flop_estimate-124"><a href="#flop_estimate-124"><span class="linenos">124</span></a><span class="sd">    per level (comparisons, not floating-point operations). Input</span>
-</span><span id="flop_estimate-125"><a href="#flop_estimate-125"><span class="linenos">125</span></a><span class="sd">    standardisation is not counted.</span>
+</span><span id="flop_estimate-121"><a href="#flop_estimate-121"><span class="linenos">121</span></a><span class="sd">    SVR = for each support vector, about 3d + 2 operations: 3d - 1 for the</span>
+</span><span id="flop_estimate-122"><a href="#flop_estimate-122"><span class="linenos">122</span></a><span class="sd">    squared distance plus about 3 for scaling by gamma, the exponential</span>
+</span><span id="flop_estimate-123"><a href="#flop_estimate-123"><span class="linenos">123</span></a><span class="sd">    (counted as one operation) and the weighted accumulation; tree = one</span>
+</span><span id="flop_estimate-124"><a href="#flop_estimate-124"><span class="linenos">124</span></a><span class="sd">    comparison per level (comparisons, not floating-point operations).</span>
+</span><span id="flop_estimate-125"><a href="#flop_estimate-125"><span class="linenos">125</span></a><span class="sd">    Input standardisation is not counted.</span>
 </span><span id="flop_estimate-126"><a href="#flop_estimate-126"><span class="linenos">126</span></a>
 </span><span id="flop_estimate-127"><a href="#flop_estimate-127"><span class="linenos">127</span></a><span class="sd">    Args:</span>
 </span><span id="flop_estimate-128"><a href="#flop_estimate-128"><span class="linenos">128</span></a><span class="sd">        name: ``"linear"``, ``"tree"`` or ``"svr"``.</span>
@@ -823,11 +823,11 @@ rows are not used here.</p>
             <div class="docstring"><p>Estimate the arithmetic needed to predict <code>n_rows</code> rows.</p>
 
 <p>Assumptions: linear = one multiply-add per coefficient (2 per feature);
-SVR = for each support vector, 3d - 1 operations for the squared
-distance plus 3 more (scale, exp counted as one, multiply by the dual
-coefficient) and 1 to accumulate, giving 3d + 2; tree = one comparison
-per level (comparisons, not floating-point operations). Input
-standardisation is not counted.</p>
+SVR = for each support vector, about 3d + 2 operations: 3d - 1 for the
+squared distance plus about 3 for scaling by gamma, the exponential
+(counted as one operation) and the weighted accumulation; tree = one
+comparison per level (comparisons, not floating-point operations).
+Input standardisation is not counted.</p>
 
 <h6 id="arguments">Arguments:</h6>
 

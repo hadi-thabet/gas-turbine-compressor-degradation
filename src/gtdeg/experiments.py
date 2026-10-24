@@ -117,11 +117,11 @@ def flop_estimate(name, model, n_features, n_rows):
     """Estimate the arithmetic needed to predict ``n_rows`` rows.
 
     Assumptions: linear = one multiply-add per coefficient (2 per feature);
-    SVR = for each support vector, 3d - 1 operations for the squared
-    distance plus 3 more (scale, exp counted as one, multiply by the dual
-    coefficient) and 1 to accumulate, giving 3d + 2; tree = one comparison
-    per level (comparisons, not floating-point operations). Input
-    standardisation is not counted.
+    SVR = for each support vector, about 3d + 2 operations: 3d - 1 for the
+    squared distance plus about 3 for scaling by gamma, the exponential
+    (counted as one operation) and the weighted accumulation; tree = one
+    comparison per level (comparisons, not floating-point operations).
+    Input standardisation is not counted.
 
     Args:
         name: ``"linear"``, ``"tree"`` or ``"svr"``.
