@@ -6,3 +6,4 @@ scikit-learn
 jupyter
 pytest
 pdoc
+pytest-cov
